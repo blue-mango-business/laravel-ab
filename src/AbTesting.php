@@ -126,7 +126,7 @@ class AbTesting
     {
         $this->pageView();
 
-        return $this->getExperiment()->name === $name;
+        return optional($this->getExperiment())->name === $name;
     }
 
     /**
