@@ -142,7 +142,9 @@ class AbTesting
             $this->pageView();
         }
 
-        $goal = $this->getExperiment()->goals->where('name', $goal)->first();
+        $goal = null;
+        if (is_object($this->getExperiment()))
+            $goal = $this->getExperiment()->goals->where('name', $goal)->first();
 
         if (! $goal) {
             return false;
