@@ -4,9 +4,9 @@ namespace Ben182\AbTesting\Tests;
 
 use Ben182\AbTesting\AbTesting;
 use Ben182\AbTesting\AbTestingFacade;
+use Ben182\AbTesting\Events\ExperimentNewVisitor;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Event;
-use Ben182\AbTesting\Events\ExperimentNewVisitor;
 
 class PageViewTest extends TestCase
 {
@@ -96,5 +96,15 @@ class PageViewTest extends TestCase
         $this->newVisitor();
 
         $this->assertTrue(Blade::check('ab', 'firstExperiment'));
+    }
+
+    public function test_that_isExperiment_works_with_crawlers()
+    {
+        config([
+            'ab-testing.ignore_crawlers' => true,
+        ]);
+        $_SERVER['HTTP_USER_AGENT'] = 'Googlebot';
+
+        $this->assertFalse(AbTestingFacade::isExperiment('firstExperiment'));
     }
 }
